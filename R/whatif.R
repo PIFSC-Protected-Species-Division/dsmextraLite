@@ -9,10 +9,10 @@
 ### @param choice An optional string indicating which analyses to undertake. The options are either "hull", only perform the convex hull membership test; "distance", do not perform the convex hull test but do everything else, such as calculating the distance between each counterfactual and data point; or "both", undertake both the convex hull test and the distance calculations (i.e., do everything). Default is "both".
 ### @param verbose Logical. Show or hide possible warnings and messages.
 ###
-### @importFrom utils read.table setTxtProgressBar txtProgressBar
-### @importFrom lpSolve lp
-### @importFrom pbmcapply pbmclapply
-### @importFrom stats complete.cases delete.response model.frame model.matrix na.fail na.omit terms update.formula
+#' @importFrom utils read.table setTxtProgressBar txtProgressBar
+#' @importFrom lpSolve lp
+#' @importFrom pbmcapply pbmclapply
+#' @importFrom stats complete.cases delete.response model.frame model.matrix na.fail na.omit terms update.formula
 ###
 ### @return An object of class "whatif".
 ###
