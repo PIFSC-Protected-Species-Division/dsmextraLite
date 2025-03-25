@@ -1,0 +1,23 @@
+Package: dsmextraLite
+Type: Package
+Title: A Toolkit for Extrapolation Assessments in Density Surface Models
+Version: 0.0.9001
+Authors@R: c(
+    person(
+      "Devin", "Johnson",
+      email = "devin.johnson@noaa.gov",
+      role = c("aut", "cre")
+    )
+  )
+Description: User-friendly tools for the detection and assessment of 
+  extrapolation in multivariate environmental space (Bouchet et al. 2019), with 
+  applications to density surface models of line transect data. Provides 
+  convenience functions for summarising and visualising extrapolation in 
+  prediction areas. This is a streamlined version of the dsmextras package 
+  (https://github.com/densitymodelling/dsmextra) that uses update spatial data 
+  packages
+Imports: lpSolve, pbmcapply, purrr, sf, terra
+License: CC0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
