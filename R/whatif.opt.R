@@ -17,7 +17,7 @@
 ### @param no.partitions Integer. Number of desired partitions of the data (default of 10).
 ### @param verbose Logical. Show or hide possible warnings and messages.
 ###
-### @importFrom stats model.frame model.matrix na.fail na.omit terms quantile update.formula
+#' @importFrom stats model.frame model.matrix na.fail na.omit terms quantile update.formula
 ###
 ### @return A list object containing extrapolation values in both data.frame and raster format.
 ###
