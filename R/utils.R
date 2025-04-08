@@ -1,4 +1,11 @@
 
+#' @title Convert an sf points data frame grid to a SpatRaster object
+#' @param x An sf points data frame with locations on a grid
+#' @param digits The number of significant digits in the coordinate values for snapping to a grid
+#' @importFrom terra rast crs
+#' @importFrom sf st_drop_geometry st_coordinates st_crs
+#' @author Devin S. Johnson
+#' @export
 sf_to_rast <- function(x, digits=6){
   if(!inherits(x,"sf")) stop("x must be an sf object.")
   prj <- st_crs(x)

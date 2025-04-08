@@ -15,6 +15,8 @@
 #' @keywords internal
 #' @import purrr
 #' @importFrom stats var mahalanobis
+#' @importFrom dplyr mutate
+#' @importFrom tibble tibble
 
 ExDet <- function(ref, tg, xp){
 
