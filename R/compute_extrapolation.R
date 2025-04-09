@@ -62,6 +62,7 @@ compute_extrapolation <- function(samples,
   #---------------------------------------------
   # Perform function checks
   #---------------------------------------------
+  # covariate.names <- sort(covariate.names)
   if(!inherits(samples, "sf")) stop("samples must be an sf data set")
   class(prediction.grid)
   if(!any(c("sf","SpatRaster")%in%class(prediction.grid))) stop("prediction.grid must be an sf data set or a SpatRaster")
@@ -116,6 +117,9 @@ compute_extrapolation <- function(samples,
   }
   names(mesgaran)[1:2] <- c("x","y")
   mesgaran <- st_as_sf(mesgaran, coords = c("x","y"), crs=prj_pred)
+  # mesgaran$mic <- ifelse(mesgaran$mic==0, NA, mesgaran$mic)
+  # mesgaran$mic_univariate <- factor(covariate.names[mesgaran$mic_univariate], levels=levels(mesgaran$mic))
+  # mesgaran$mic_combinatorial <- factor(covariate.names[mesgaran$mic_combinatorial], levels=levels(mesgaran$mic))
 
   #---------------------------------------------
   # Return a list with univariate, combinatorial, and analog conditions as separate elements
@@ -136,23 +140,26 @@ compute_extrapolation <- function(samples,
   #---------------------------------------------
 
   if(inherits(prediction.grid, "SpatRaster")){
-    reslist$rasters$ExDet <- terra::rast(terra::ext(prediction.grid), resolution=terra::res(prediction.grid))
-    terra::crs(reslist$rasters$ExDet) <- terra::crs(prediction.grid)
+    cov_df <- data.frame(id=0:length(covariate.names), covariate=c("None",covariate.names))
     nms <- names(reslist$data)
-    reslist$rasters$ExDet[[nms[1]]] <- NA
-    reslist$rasters$ExDet[reslist$data[[nms[1]]]$cell] <- reslist$data[[nms[1]]]$ExDet
-    for(i in 2:4){
-      reslist$rasters$ExDet[[nms[i]]] <- NA
-      reslist$rasters$ExDet[[nms[i]]][reslist$data[[i]]$cell] <- reslist$data[[i]]$ExDet
+    r <- terra::rast(terra::ext(prediction.grid), resolution=terra::res(prediction.grid))
+    terra::crs(r) <- terra::crs(prediction.grid)
+    # ExDet
+    r_lst <- vector("list", length(nms))
+    names(r_lst) <- nms
+    for(i in 1:length(r_lst)){
+      r_lst[[i]] <- r
+      r_lst[[i]][reslist$data[[i]]$cell] <-  reslist$data[[i]]$ExDet
     }
-    reslist$rasters$mic <- terra::rast(terra::ext(prediction.grid), resolution=terra::res(prediction.grid))
-    terra::crs(reslist$rasters$mic) <- terra::crs(prediction.grid)
-    reslist$rasters$mic[[nms[1]]] <- NA
-    reslist$rasters$mic[reslist$data[[nms[1]]]$cell] <- reslist$data[[nms[1]]]$mic
-    for(i in 2:4){
-      reslist$rasters$mic[[nms[i]]] <- NA
-      reslist$rasters$mic[[nms[i]]][reslist$data[[i]]$cell] <- reslist$data[[i]]$mic
+    reslist$rasters$ExDet <- rast(r_lst)
+
+    #MIC
+    for(i in 1:length(r_lst)){
+      r_lst[[i]] <- r
+      r_lst[[i]][reslist$data[[i]]$cell] <-  reslist$data[[i]]$mic
+      levels( r_lst[[i]]) <- cov_df
     }
+    reslist$rasters$mic <- rast(r_lst)
   }
 
 #  #---------------------------------------------
