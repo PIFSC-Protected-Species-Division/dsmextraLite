@@ -1,7 +1,7 @@
 Package: dsmextraLite
 Type: Package
 Title: A Toolkit for Extrapolation Assessments in Density Surface Models
-Version: 0.0.9001
+Version: 0.0.9003
 Authors@R: c(person("Phil", "Bouchet", email = "pjbouchet@gmail.com", role = c("aut", "cre")), person("David", "Miller", email = "dlm22@st-andrews.ac.uk", role = c("aut")), person("Laura", "Mannocci", email = "laura.mannocci@duke.edu", role = c("aut")), person("Jason", "Roberts", email = "jason.roberts@duke.edu", role = c("aut")), person("Catriona", "Harris", email = "Catriona.Harris@st-andrews.ac.uk", role = c("aut")), person("Len", "Thomas", email = "len.thomas@st-andrews.ac.uk", role = c("aut")),person("Devin", "Johnson", email = "devin.johnson@noaa.gov", role = c("aut")))
 Description: User-friendly tools for the detection and assessment of 
   extrapolation in multivariate environmental space (Bouchet et al. 2019), with 
@@ -15,3 +15,5 @@ License: CC0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.5)
