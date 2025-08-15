@@ -1,6 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![picMaps status
+[![dmsextraLite status
 badge](https://pifsc-protected-species-division.r-universe.dev/badges/dsmextraLite)](https://pifsc-protected-species-division.r-universe.dev/dsmextraLite)
 
 # Installation

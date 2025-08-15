@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![picMaps status badge](https://pifsc-protected-species-division.r-universe.dev/badges/dsmextraLite)](https://pifsc-protected-species-division.r-universe.dev/dsmextraLite)
+[![dmsextraLite status badge](https://pifsc-protected-species-division.r-universe.dev/badges/dsmextraLite)](https://pifsc-protected-species-division.r-universe.dev/dsmextraLite)
 
 # Installation
 
