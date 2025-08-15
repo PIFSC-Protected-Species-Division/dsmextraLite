@@ -1,18 +1,64 @@
+---
+output:
+  md_document:
+    variant: gfm
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+[![picMaps status badge](https://pifsc-protected-species-division.r-universe.dev/badges/dsmextraLite)](https://pifsc-protected-species-division.r-universe.dev/dsmextraLite)
+
+# Installation
+
+## R-Universe
+
+#### Binary
+
+```{r, eval=FALSE}
+install.packages('dsmextraLite', 
+                 repos=c('https://pifsc-protected-species-division.r-universe.dev','https://cloud.r-project.org')
+)
+```
+
+#### Source
+
+```{r, eval=FALSE}
+install.packages('dsmextraLite', type='source', 
+                 repos=c('https://pifsc-protected-species-division.r-universe.dev','https://cloud.r-project.org')
+)
+```
+
+## Github
+
+```{r, eval=FALSE}
+remotes::install_github('pifsc-protected-species-division/dsmextraLite')
+```
+
+# Example
+
+```{r, echo=FALSE, message=FALSE}
 
 library(sf)
 library(terra)
 library(mapview)
 library(concaveman)
 library(rmapshaper)
+library(mapview)
 library(ggplot2)
 library(ggspatial)
 library(rnaturalearth)
 library(ggnewscale)
-library(ggthemes)
+library(paletteer)
 library(RColorBrewer)
-
 library(dsmextraLite)
-
 
 #' -----------------------------------------------------------------------------
 #' Load and extract the data
@@ -76,15 +122,19 @@ ggplot() + theme_bw() +
 #' -----------------------------------------------------------------------------
 #' Interactive plot using the {mapview} package
 #' -----------------------------------------------------------------------------
-library(mapview)
+# library(mapview)
 ## ExDet
-mapview(spermwhale.extrapolation$rasters$ExDet$combinatorial,
-        layer.name="Combinatorial", na.color=NA, col.regions=brewer.pal(9, "Purples")) +
-  mapview(spermwhale.extrapolation$rasters$ExDet$univariate,
-          layer.name="Univariate", na.color=NA, col.regions=rev(brewer.pal(9, "Oranges"))) +
-  mapview(spermwhale.extrapolation$rasters$ExDet$analogue,
-          layer.name="Analogue", na.color=NA, col.regions=brewer.pal(9, "Greens"))
+# mapview(spermwhale.extrapolation$rasters$ExDet$combinatorial,
+#         layer.name="Combinatorial", na.color=NA, col.regions=brewer.pal(9, "Purples")) +
+#   mapview(spermwhale.extrapolation$rasters$ExDet$univariate,
+#           layer.name="Univariate", na.color=NA, col.regions=rev(brewer.pal(9, "Oranges"))) +
+#   mapview(spermwhale.extrapolation$rasters$ExDet$analogue,
+#           layer.name="Analogue", na.color=NA, col.regions=brewer.pal(9, "Greens"))
 
 ## MIC -- currently doesn't work, legend is wrong
   # mapview(spermwhale.extrapolation$rasters$mic$all, layer.name="MIC", na.color=NA)
+```
 
+# Disclaimer
+
+*This software package is developed and maintained by scientists at the NOAA Fisheries Pacific Islands Fisheries Science Center and should be considered a fundamental research communication. The recommendations and conclusions presented here are those of the authors and this software should not be construed as official communication by NMFS, NOAA, or the U.S. Dept. of Commerce. In addition, reference to trade names does not imply endorsement by the National Marine Fisheries Service, NOAA. While the best efforts have been made to insure the highest quality, tools such as this are under constant development and are subject to change.*
