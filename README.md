@@ -31,53 +31,148 @@ remotes::install_github('pifsc-protected-species-division/dsmextraLite')
 
 # Example
 
-    #> 
-    #> 
-    #> Table: Extrapolation
-    #> 
-    #> Type            Count         Percentage  
-    #> --------------  ------------  ------------
-    #> Univariate      65            1.23        
-    #> Combinatorial   45            0.85        
-    #> -----------     -----------   ----------- 
-    #> Sub-total       110           2.08        
-    #> -----------     -----------   ----------- 
-    #> Analogue        5175          97.92       
-    #> -----------     -----------   ----------- 
-    #> Total           5285          100         
-    #> 
-    #> 
-    #> Table: Most influential covariates (MIC)
-    #> 
-    #> Type            Covariate     Count         Percentage  
-    #> --------------  ------------  ------------  ------------
-    #> Univariate      EKE           24            0.45        
-    #> Univariate      SST           17            0.32        
-    #> Univariate      Depth         16            0.3         
-    #> Univariate      NPP           6             0.11        
-    #> Univariate      DistToCAS     2             0.038       
-    #> -----------     -----------   -----------   ----------- 
-    #> Sub-total                     65            1.2         
-    #> -----------     -----------   -----------   ----------- 
-    #> Combinatorial   NPP           39            0.74        
-    #> Combinatorial   Depth         6             0.11        
-    #> -----------     -----------   -----------   ----------- 
-    #> Sub-total                     45            0.85        
-    #> -----------     -----------   -----------   ----------- 
-    #> Total                         110           2.1
-    #> Warning: Removed 21254 rows containing missing values or values outside the scale range
-    #> (`geom_raster()`).
-    #> Warning: Removed 21237 rows containing missing values or values outside the scale range
-    #> (`geom_raster()`).
-    #> Warning: Removed 16117 rows containing missing values or values outside the scale range
-    #> (`geom_raster()`).
+``` r
+
+library(sf)
+library(terra)
+library(mapview)
+library(concaveman)
+library(rmapshaper)
+library(mapview)
+library(ggplot2)
+library(ggspatial)
+library(rnaturalearth)
+library(ggnewscale)
+library(paletteer)
+library(RColorBrewer)
+library(dsmextraLite)
+
+#' -----------------------------------------------------------------------------
+#' Load sperm whale example data
+#' -----------------------------------------------------------------------------
+load(system.file("example_data", "spermwhales.rda", package = "dsmextraLite"))
+
+
+#' -----------------------------------------------------------------------------
+#' Create a raster prediction grid for demonstration
+#' -----------------------------------------------------------------------------
+study_area <- concaveman::concaveman(predgrid) %>%
+  ms_simplify(keep=0.15) %>% st_buffer(10000)
+predgrid <- dsmextraLite::sf_to_rast(predgrid)
+
+#' -----------------------------------------------------------------------------
+#' Compute extrapolation
+#' -----------------------------------------------------------------------------
+
+spermwhale.extrapolation <- compute_extrapolation(
+  samples = segments,
+  covariate.names = c("Depth", "SST", "NPP", "DistToCAS", "EKE"),
+  prediction.grid = predgrid
+)
+
+summary(spermwhale.extrapolation)
+#> 
+#> 
+#> Table: Extrapolation
+#> 
+#> Type            Count         Percentage  
+#> --------------  ------------  ------------
+#> Univariate      65            1.23        
+#> Combinatorial   45            0.85        
+#> -----------     -----------   ----------- 
+#> Sub-total       110           2.08        
+#> -----------     -----------   ----------- 
+#> Analogue        5175          97.92       
+#> -----------     -----------   ----------- 
+#> Total           5285          100         
+#> 
+#> 
+#> Table: Most influential covariates (MIC)
+#> 
+#> Type            Covariate     Count         Percentage  
+#> --------------  ------------  ------------  ------------
+#> Univariate      EKE           24            0.45        
+#> Univariate      SST           17            0.32        
+#> Univariate      Depth         16            0.3         
+#> Univariate      NPP           6             0.11        
+#> Univariate      DistToCAS     2             0.038       
+#> -----------     -----------   -----------   ----------- 
+#> Sub-total                     65            1.2         
+#> -----------     -----------   -----------   ----------- 
+#> Combinatorial   NPP           39            0.74        
+#> Combinatorial   Depth         6             0.11        
+#> -----------     -----------   -----------   ----------- 
+#> Sub-total                     45            0.85        
+#> -----------     -----------   -----------   ----------- 
+#> Total                         110           2.1
+
+#' -----------------------------------------------------------------------------
+#' High definition fixed plot for export
+#' -----------------------------------------------------------------------------
+
+land <- st_geometry(ne_countries(scale=10))
+
+
+## ExDet plot
+ggplot() + theme_bw() +
+  annotation_spatial(land, fill="grey30") +
+  #layer_spatial(study_area, fill=NA) +
+  layer_spatial(spermwhale.extrapolation$rasters$ExDet$combinatorial) +
+  scale_fill_distiller(palette = "Purples", direction = 2, na.value=NA) +
+  guides(fill=guide_legend(title="Combinatorial")) +
+  new_scale_fill() +
+  layer_spatial(spermwhale.extrapolation$rasters$ExDet$univariate) +
+  scale_fill_distiller(palette = "Oranges", na.value=NA) +
+  guides(fill=guide_legend(title="Univariate")) +
+  new_scale_fill() +
+  layer_spatial(spermwhale.extrapolation$rasters$ExDet$analogue) +
+  scale_fill_distiller(palette = "Greens", direction = 2, na.value=NA) +
+  guides(fill=guide_legend(title="Analogue")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+#> Warning: Removed 21254 rows containing missing values or values outside the scale range
+#> (`geom_raster()`).
+#> Warning: Removed 21237 rows containing missing values or values outside the scale range
+#> (`geom_raster()`).
+#> Warning: Removed 16117 rows containing missing values or values outside the scale range
+#> (`geom_raster()`).
+```
 
 ![](README-unnamed-chunk-5-1.png)<!-- -->
 
-    #> Warning: Removed 15996 rows containing missing values or values outside the scale range
-    #> (`geom_raster()`).
+``` r
+
+## MIC plot
+disc_pal <- c("gray90", paletteer_d("ggthemes::calc", 5))
+ggplot() + theme_bw() +
+  annotation_spatial(land, fill="gray30") +
+  layer_spatial(spermwhale.extrapolation$rasters$mic$all) +
+  scale_fill_manual(values=disc_pal, na.translate=FALSE) +
+  guides(fill=guide_legend(title="MIC")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+#> Warning: Removed 15996 rows containing missing values or values outside the scale range
+#> (`geom_raster()`).
+```
 
 ![](README-unnamed-chunk-5-2.png)<!-- -->
+
+``` r
+
+
+#' -----------------------------------------------------------------------------
+#' Interactive plot using the {mapview} package
+#' -----------------------------------------------------------------------------
+# library(mapview)
+## ExDet
+# mapview(spermwhale.extrapolation$rasters$ExDet$combinatorial,
+#         layer.name="Combinatorial", na.color=NA, col.regions=brewer.pal(9, "Purples")) +
+#   mapview(spermwhale.extrapolation$rasters$ExDet$univariate,
+#           layer.name="Univariate", na.color=NA, col.regions=rev(brewer.pal(9, "Oranges"))) +
+#   mapview(spermwhale.extrapolation$rasters$ExDet$analogue,
+#           layer.name="Analogue", na.color=NA, col.regions=brewer.pal(9, "Greens"))
+
+## MIC -- currently doesn't work, legend is wrong
+  # mapview(spermwhale.extrapolation$rasters$mic$all, layer.name="MIC", na.color=NA)
+```
 
 # Disclaimer
 

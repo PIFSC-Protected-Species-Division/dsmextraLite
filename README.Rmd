@@ -44,7 +44,7 @@ remotes::install_github('pifsc-protected-species-division/dsmextraLite')
 
 # Example
 
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=TRUE, message=FALSE}
 
 library(sf)
 library(terra)
@@ -61,9 +61,9 @@ library(RColorBrewer)
 library(dsmextraLite)
 
 #' -----------------------------------------------------------------------------
-#' Load and extract the data
+#' Load sperm whale example data
 #' -----------------------------------------------------------------------------
-data("spermwhales")
+load(system.file("example_data", "spermwhales.rda", package = "dsmextraLite"))
 
 
 #' -----------------------------------------------------------------------------

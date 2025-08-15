@@ -1,7 +1,8 @@
 Package: dsmextraLite
 Type: Package
 Title: A Toolkit for Extrapolation Assessments in Density Surface Models
-Version: 0.0.9004
+Version: 0.0.9005
+Date: August 15, 2025
 Authors@R: c(person("Phil", "Bouchet", email = "pjbouchet@gmail.com", role = c("aut")), person("David", "Miller", email = "dlm22@st-andrews.ac.uk", role = c("aut")), person("Laura", "Mannocci", email = "laura.mannocci@duke.edu", role = c("aut")), person("Jason", "Roberts", email = "jason.roberts@duke.edu", role = c("aut")), person("Catriona", "Harris", email = "Catriona.Harris@st-andrews.ac.uk", role = c("aut")), person("Len", "Thomas", email = "len.thomas@st-andrews.ac.uk", role = c("aut")),person("Devin", "Johnson", email = "devin.johnson@noaa.gov", role = c("aut","cre")))
 Description: This is a user-friendly tools for the detection and assessment of 
   extrapolation in multivariate environmental space (Bouchet et al. 2019), with 
